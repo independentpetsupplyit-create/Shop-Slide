@@ -3,21 +3,21 @@
 <head>
 <base target="_parent">
 <style>
-    body { margin: 0; }
     .slider-viewport {
         position: relative;
         width: 100%;
-        max-width: 800px;
+        max-width: 1920px;
         margin: auto;
         overflow: hidden;
         border-radius: 8px;
+        background: #fff;
     }
 
     .slider-track {
         display: flex;
         width: 100%;
-        /* Animation is toggled in JS to prevent the rewind look */
-        transition: transform 0.5s ease-in-out;
+        /* Control the speed here: 0.5s is usually the "sweet spot" */
+        transition: transform 0.5s ease-in-out; 
     }
 
     .slide-item {
@@ -31,6 +31,7 @@
         height: auto;
     }
 
+    /* Buttons */
     .nav-btn {
         position: absolute;
         top: 50%;
@@ -38,11 +39,12 @@
         background: rgba(0, 0, 0, 0.5);
         color: white;
         border: none;
-        padding: 15px;
+        padding: 16px;
         cursor: pointer;
         z-index: 10;
-        font-size: 20px;
+        font-weight: bold;
     }
+
     .prev { left: 0; }
     .next { right: 0; }
 </style>
@@ -51,73 +53,53 @@
 
 <div class="slider-viewport">
     <div class="slider-track" id="mainTrack">
-        </div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/monthly-promotions"><img src="https://shop.independentpetsupply.com/documents/d/shop/march400"></a></div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/shop/-/o/refined-search/food%3A85279b9269c52e64beaa9a63ddbfe64c492cf9c9c68b290497665c8311bfea4c"><img src="https://shop.independentpetsupply.com/documents/d/shop/flea-tick400"></a></div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/shop/-/o/brand-filter/a630c222c37ffc501bbf9e4ffee0ada09929a6f60dc98abeb4d8496210119463"><img src="https://shop.independentpetsupply.com/documents/d/shop/frommnutritionals"></a></div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C34CD420F-6354-4BA2-B6B8-3C045B0E1E52%7CD13E9DFD-F790-497A-B2ED-F3E603C05641/cn/What-s-Barking"><img src="https://shop.independentpetsupply.com/documents/d/shop/what-sbarking400"></a></div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C1F146803-9247-408E-929D-DB41FAEA1FE6%7C773D1521-8A63-4E71-B841-3EFF6646F8F6/cn/Saint-Rocco-s"><img src="https://shop.independentpetsupply.com/documents/d/shop/saintrocco-s400"></a></div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7CEF6EFE12-8866-43B6-BC8D-08046E9D0091%7C7B9AA37C-CBCE-4EDC-ACCC-D14A342B0E5B/cn/Get-Joy"><img src="https://shop.independentpetsupply.com/documents/d/shop/getjoy400green"></a></div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/documents/d/shop/heavenly_hounds_iso_2026"><img src="https://shop.independentpetsupply.com/documents/d/shop/heavenlyhounds400"></a></div>
+        <div class="slide-item"><a href="https://shop.independentpetsupply.com/documents/d/shop/wildridge_iso_2026"><img src="https://shop.independentpetsupply.com/documents/d/shop/wildridge400"></a></div>
+    </div>
 
-    <button class="nav-btn prev" id="prevBtn">&#10094;</button>
-    <button class="nav-btn next" id="nextBtn">&#10095;</button>
+    <button class="nav-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="nav-btn next" onclick="moveSlide(1)">&#10095;</button>
 </div>
 
 <script>
+    let currentIndex = 0;
     const track = document.getElementById('mainTrack');
-    
-    // Your actual data
-    const slideData = [
-        { link: "https://shop.independentpetsupply.com/monthly-promotions", img: "https://shop.independentpetsupply.com/documents/d/shop/march400" },
-        { link: "https://shop.independentpetsupply.com/shop/-/o/refined-search/food%3A85279b9269c52e64beaa9a63ddbfe64c492cf9c9c68b290497665c8311bfea4c", img: "https://shop.independentpetsupply.com/documents/d/shop/flea-tick400" },
-        { link: "https://shop.independentpetsupply.com/shop/-/o/brand-filter/a630c222c37ffc501bbf9e4ffee0ada09929a6f60dc98abeb4d8496210119463", img: "https://shop.independentpetsupply.com/documents/d/shop/frommnutritionals" },
-        { link: "https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C34CD420F-6354-4BA2-B6B8-3C045B0E1E52%7CD13E9DFD-F790-497A-B2ED-F3E603C05641/cn/What-s-Barking", img: "https://shop.independentpetsupply.com/documents/d/shop/what-sbarking400" },
-        { link: "https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C1F146803-9247-408E-929D-DB41FAEA1FE6%7C773D1521-8A63-4E71-B841-3EFF6646F8F6/cn/Saint-Rocco-s", img: "https://shop.independentpetsupply.com/documents/d/shop/saintrocco-s400" },
-        { link: "https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7CEF6EFE12-8866-43B6-BC8D-08046E9D0091%7C7B9AA37C-CBCE-4EDC-ACCC-D14A342B0E5B/cn/Get-Joy", img: "https://shop.independentpetsupply.com/documents/d/shop/getjoy400green" },
-        { link: "https://shop.independentpetsupply.com/documents/d/shop/heavenly_hounds_iso_2026", img: "https://shop.independentpetsupply.com/documents/d/shop/heavenlyhounds400" },
-        { link: "https://shop.independentpetsupply.com/documents/d/shop/wildridge_iso_2026", img: "https://shop.independentpetsupply.com/documents/d/shop/wildridge400" }
-    ];
+    const slides = document.querySelectorAll('.slide-item');
+    const totalSlides = slides.length;
 
-    // Build slides + Clones (Cloning First and Last)
-    const allSlides = [slideData[slideData.length - 1], ...slideData, slideData[0]];
-    
-    track.innerHTML = allSlides.map(s => `
-        <div class="slide-item">
-            <a href="${s.link}"><img src="${s.img}"></a>
-        </div>
-    `).join('');
+    function moveSlide(step) {
+        currentIndex += step;
 
-    let index = 1; // Start at 1 because of the clone at index 0
-    let isMoving = false;
-    const total = slideData.length;
+        // The "Soft Reset" logic
+        if (currentIndex >= totalSlides) {
+            currentIndex = 0; // Jump back to start
+        } else if (currentIndex < 0) {
+            currentIndex = totalSlides - 1; // Jump to end
+        }
 
-    // Set initial position
-    track.style.transition = 'none';
-    track.style.transform = `translateX(-100%)`;
-
-    function move(direction) {
-        if (isMoving) return;
-        isMoving = true;
-        index += direction;
-        track.style.transition = 'transform 0.5s ease-in-out';
-        track.style.transform = `translateX(-${index * 100}%)`;
+        const percentage = -(currentIndex * 100);
+        track.style.transform = `translateX(${percentage}%)`;
     }
 
-    track.addEventListener('transitionend', () => {
-        isMoving = false;
-        // If we hit the "First Clone" (at the end), jump to real First slide
-        if (index === total + 1) {
-            track.style.transition = 'none';
-            index = 1;
-            track.style.transform = `translateX(-100%)`;
-        }
-        // If we hit the "Last Clone" (at the start), jump to real Last slide
-        if (index === 0) {
-            track.style.transition = 'none';
-            index = total;
-            track.style.transform = `translateX(-${total * 100}%)`;
-        }
-    });
+    // Auto-advance every 5 seconds
+    let autoPlay = setInterval(() => moveSlide(1), 5000);
 
-    document.getElementById('nextBtn').onclick = () => move(1);
-    document.getElementById('prevBtn').onclick = () => move(-1);
-
-    // Auto Play
-    setInterval(() => move(1), 5000);
+    // Stop auto-play when a user clicks a button to prevent "double jumping"
+    function userLinkClick(step) {
+        clearInterval(autoPlay);
+        moveSlide(step);
+        autoPlay = setInterval(() => moveSlide(1), 5000);
+    }
+    
+    // Update the button HTML to use this new function
+    document.querySelector('.prev').setAttribute('onclick', 'userLinkClick(-1)');
+    document.querySelector('.next').setAttribute('onclick', 'userLinkClick(1)');
 </script>
 
 </body>
