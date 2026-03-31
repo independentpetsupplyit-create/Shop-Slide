@@ -3,6 +3,7 @@
 <head>
 <base target="_parent">
 <style>
+    body { margin: 0; }
     .slider-viewport {
         position: relative;
         width: 100%;
@@ -14,13 +15,14 @@
 
     .slider-track {
         display: flex;
-        /* Animation is handled by JS now to allow for the "instant" jump */
         width: 100%;
+        /* Animation is toggled in JS to prevent the rewind look */
+        transition: transform 0.5s ease-in-out;
     }
 
     .slide-item {
         min-width: 100%;
-        box-sizing: border-box;
+        flex-shrink: 0;
     }
 
     .slide-item img {
@@ -33,92 +35,89 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.5);
         color: white;
         border: none;
-        padding: 15px 10px;
+        padding: 15px;
         cursor: pointer;
-        font-size: 20px;
         z-index: 10;
+        font-size: 20px;
     }
-
-    .prev { left: 0; border-radius: 0 5px 5px 0; }
-    .next { right: 0; border-radius: 5px 0 0 5px; }
+    .prev { left: 0; }
+    .next { right: 0; }
 </style>
 </head>
 <body>
 
 <div class="slider-viewport">
     <div class="slider-track" id="mainTrack">
-        <div class="slide-item"><a href="link1"><img src="https://shop.independentpetsupply.com/documents/d/shop/march400"></a></div>
-        <div class="slide-item"><a href="link2"><img src="https://shop.independentpetsupply.com/documents/d/shop/flea-tick400"></a></div>
-        <div class="slide-item"><a href="link3"><img src="https://shop.independentpetsupply.com/documents/d/shop/frommnutritionals"></a></div>
-        <div class="slide-item"><a href="link4"><img src="https://shop.independentpetsupply.com/documents/d/shop/what-sbarking400"></a></div>
-        <div class="slide-item"><a href="link5"><img src="https://shop.independentpetsupply.com/documents/d/shop/saintrocco-s400"></a></div>
-        <div class="slide-item"><a href="link6"><img src="https://shop.independentpetsupply.com/documents/d/shop/getjoy400green"></a></div>
-        <div class="slide-item"><a href="link7"><img src="https://shop.independentpetsupply.com/documents/d/shop/heavenlyhounds400"></a></div>
-        <div class="slide-item"><a href="link8"><img src="https://shop.independentpetsupply.com/documents/d/shop/wildridge400"></a></div>
-    </div>
+        </div>
 
-    <button class="nav-btn prev" onclick="changeSlide(-1)">&#10094;</button>
-    <button class="nav-btn next" onclick="changeSlide(1)">&#10095;</button>
+    <button class="nav-btn prev" id="prevBtn">&#10094;</button>
+    <button class="nav-btn next" id="nextBtn">&#10095;</button>
 </div>
 
 <script>
-    const track = document.getElementById("mainTrack");
-    const slides = document.querySelectorAll(".slide-item");
+    const track = document.getElementById('mainTrack');
     
-    // 1. Clone the first and last slides
-    const firstClone = slides[0].cloneNode(true);
-    const lastClone = slides[slides.length - 1].cloneNode(true);
+    // Your actual data
+    const slideData = [
+        { link: "https://shop.independentpetsupply.com/monthly-promotions", img: "https://shop.independentpetsupply.com/documents/d/shop/march400" },
+        { link: "https://shop.independentpetsupply.com/shop/-/o/refined-search/food%3A85279b9269c52e64beaa9a63ddbfe64c492cf9c9c68b290497665c8311bfea4c", img: "https://shop.independentpetsupply.com/documents/d/shop/flea-tick400" },
+        { link: "https://shop.independentpetsupply.com/shop/-/o/brand-filter/a630c222c37ffc501bbf9e4ffee0ada09929a6f60dc98abeb4d8496210119463", img: "https://shop.independentpetsupply.com/documents/d/shop/frommnutritionals" },
+        { link: "https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C34CD420F-6354-4BA2-B6B8-3C045B0E1E52%7CD13E9DFD-F790-497A-B2ED-F3E603C05641/cn/What-s-Barking", img: "https://shop.independentpetsupply.com/documents/d/shop/what-sbarking400" },
+        { link: "https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C1F146803-9247-408E-929D-DB41FAEA1FE6%7C773D1521-8A63-4E71-B841-3EFF6646F8F6/cn/Saint-Rocco-s", img: "https://shop.independentpetsupply.com/documents/d/shop/saintrocco-s400" },
+        { link: "https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7CEF6EFE12-8866-43B6-BC8D-08046E9D0091%7C7B9AA37C-CBCE-4EDC-ACCC-D14A342B0E5B/cn/Get-Joy", img: "https://shop.independentpetsupply.com/documents/d/shop/getjoy400green" },
+        { link: "https://shop.independentpetsupply.com/documents/d/shop/heavenly_hounds_iso_2026", img: "https://shop.independentpetsupply.com/documents/d/shop/heavenlyhounds400" },
+        { link: "https://shop.independentpetsupply.com/documents/d/shop/wildridge_iso_2026", img: "https://shop.independentpetsupply.com/documents/d/shop/wildridge400" }
+    ];
 
-    // 2. Add them to the track
-    track.appendChild(firstClone);
-    track.insertBefore(lastClone, slides[0]);
+    // Build slides + Clones (Cloning First and Last)
+    const allSlides = [slideData[slideData.length - 1], ...slideData, slideData[0]];
+    
+    track.innerHTML = allSlides.map(s => `
+        <div class="slide-item">
+            <a href="${s.link}"><img src="${s.img}"></a>
+        </div>
+    `).join('');
 
-    // 3. Set starting position (offset by 1 because of the clone at the start)
-    let index = 1;
-    let isTransitioning = false;
-    track.style.transform = `translateX(-${index * 100}%)`;
+    let index = 1; // Start at 1 because of the clone at index 0
+    let isMoving = false;
+    const total = slideData.length;
 
-    function updateSlider(animate = true) {
-        if (animate) {
-            track.style.transition = "transform 0.6s ease-in-out";
-        } else {
-            track.style.transition = "none";
-        }
+    // Set initial position
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-100%)`;
+
+    function move(direction) {
+        if (isMoving) return;
+        isMoving = true;
+        index += direction;
+        track.style.transition = 'transform 0.5s ease-in-out';
         track.style.transform = `translateX(-${index * 100}%)`;
     }
 
-    function changeSlide(n) {
-        if (isTransitioning) return; // Prevent clicking too fast
-        isTransitioning = true;
-        index += n;
-        updateSlider(true);
-    }
-
-    // This event listens for the end of the sliding animation
     track.addEventListener('transitionend', () => {
-        isTransitioning = false;
-        
-        // If we are on the "fake" last slide, jump back to the real first one
-        if (index >= slides.length + 1) {
+        isMoving = false;
+        // If we hit the "First Clone" (at the end), jump to real First slide
+        if (index === total + 1) {
+            track.style.transition = 'none';
             index = 1;
-            updateSlider(false);
+            track.style.transform = `translateX(-100%)`;
         }
-        // If we are on the "fake" first slide, jump to the real last one
-        if (index <= 0) {
-            index = slides.length;
-            updateSlider(false);
+        // If we hit the "Last Clone" (at the start), jump to real Last slide
+        if (index === 0) {
+            track.style.transition = 'none';
+            index = total;
+            track.style.transform = `translateX(-${total * 100}%)`;
         }
     });
 
-    // Auto-play
-    setInterval(() => {
-        if (!isTransitioning) {
-            changeSlide(1);
-        }
-    }, 5000);
+    document.getElementById('nextBtn').onclick = () => move(1);
+    document.getElementById('prevBtn').onclick = () => move(-1);
+
+    // Auto Play
+    setInterval(() => move(1), 5000);
 </script>
 
 </body>
