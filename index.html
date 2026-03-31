@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slider</title>
+
+<div class="slideContainer">
+    
+    <!--Mar.-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/monthly-promotions" target="_blank">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/march400" /></a></div>
+
+    <!--Flea & Tick-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/shop/-/o/refined-search/food%3A85279b9269c52e64beaa9a63ddbfe64c492cf9c9c68b290497665c8311bfea4c" target="_blank">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/flea-tick400" /></a></div>
+
+    <!--Fromm-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/shop/-/o/brand-filter/a630c222c37ffc501bbf9e4ffee0ada09929a6f60dc98abeb4d8496210119463/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C6F79CC0C-8653-4C30-9C75-2F5191BF794D/cn/New-and-Coming-Soon/filterProductsByStock/false" target="_blank">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/frommnutritionals" /></a></div>
+    
+    <!--What's Barking-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C34CD420F-6354-4BA2-B6B8-3C045B0E1E52%7CD13E9DFD-F790-497A-B2ED-F3E603C05641/cn/What-s-Barking">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/what-sbarking400" /></a></div>
+
+    <!--Saint Rocco's-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C1F146803-9247-408E-929D-DB41FAEA1FE6%7C773D1521-8A63-4E71-B841-3EFF6646F8F6/cn/Saint-Rocco-s">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/saintrocco-s400" /></a></div>
+
+    <!--Get Joy-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7CEF6EFE12-8866-43B6-BC8D-08046E9D0091%7C7B9AA37C-CBCE-4EDC-ACCC-D14A342B0E5B/cn/Get-Joy/filterProductsByStock/false">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/getjoy400green" /></a></div>
+
+    <!--Heavenly Hounds-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/documents/d/shop/heavenly_hounds_iso_2026" target="_blank">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/heavenlyhounds400" /></a></div>
+
+    <!--Wildridge-->
+    <div class="slideContainer"><a href="https://shop.independentpetsupply.com/documents/d/shop/wildridge_iso_2026" target="_blank">
+    <img alt="" class="slideImages imageSlide" src="https://shop.independentpetsupply.com/documents/d/shop/wildridge400" /></a></div>
+
+    <script>
+    var slideIndex = 0;
+    carousel();
+    
+    function carousel() {
+    var i;
+    var x = document.getElementsByClassName("slideImages");
+    for (i = 0; i < x.length; i++) {
+                       x[i].style.display = "none";
+    }
+    slideIndex++;
+                       if (slideIndex > x.length) {slideIndex = 1}
+    x[slideIndex-1].style.display = "block";
+    setTimeout(carousel, 5000);
+    };
+    
+    </script>
+</div>
