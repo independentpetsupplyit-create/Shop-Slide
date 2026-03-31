@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base target="_parent">
+<base target="_parent">
 <style>
-    /* Main wrapper to clip the sliding images */
     .slider-viewport {
         position: relative;
         width: 100%;
-        max-width: 1920px; /* Adjust to your preferred width */
+        max-width: 800px;
         margin: auto;
         overflow: hidden;
         border-radius: 8px;
     }
 
-    /* The actual moving row of images */
     .slider-track {
         display: flex;
-        transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1);
+        /* Animation is handled by JS now to allow for the "instant" jump */
         width: 100%;
     }
 
-    /* Each slide takes up 100% of the viewport width */
     .slide-item {
         min-width: 100%;
         box-sizing: border-box;
@@ -32,7 +29,6 @@
         height: auto;
     }
 
-    /* Navigation Buttons */
     .nav-btn {
         position: absolute;
         top: 50%;
@@ -44,11 +40,6 @@
         cursor: pointer;
         font-size: 20px;
         z-index: 10;
-        transition: background 0.3s;
-    }
-
-    .nav-btn:hover {
-        background: rgba(0, 0, 0, 0.8);
     }
 
     .prev { left: 0; border-radius: 0 5px 5px 0; }
@@ -59,53 +50,14 @@
 
 <div class="slider-viewport">
     <div class="slider-track" id="mainTrack">
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/monthly-promotions" target="_blank">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/march400" alt="March Promotions" />
-            </a>
-        </div>
-
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/shop/-/o/refined-search/food%3A85279b9269c52e64beaa9a63ddbfe64c492cf9c9c68b290497665c8311bfea4c" target="_blank">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/flea-tick400" alt="Flea and Tick" />
-            </a>
-        </div>
-
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/shop/-/o/brand-filter/a630c222c37ffc501bbf9e4ffee0ada09929a6f60dc98abeb4d8496210119463/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C6F79CC0C-8653-4C30-9C75-2F5191BF794D/cn/New-and-Coming-Soon/filterProductsByStock/false" target="_blank">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/frommnutritionals" alt="Fromm" />
-            </a>
-        </div>
-        
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C34CD420F-6354-4BA2-B6B8-3C045B0E1E52%7CD13E9DFD-F790-497A-B2ED-F3E603C05641/cn/What-s-Barking">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/what-sbarking400" alt="What's Barking" />
-            </a>
-        </div>
-
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7C1F146803-9247-408E-929D-DB41FAEA1FE6%7C773D1521-8A63-4E71-B841-3EFF6646F8F6/cn/Saint-Rocco-s">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/saintrocco-s400" alt="Saint Rocco's" />
-            </a>
-        </div>
-
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/shop/-/o/category/668B75C4-FE4C-4B06-8DDF-2D3F4A2E1A54%7CEF6EFE12-8866-43B6-BC8D-08046E9D0091%7C7B9AA37C-CBCE-4EDC-ACCC-D14A342B0E5B/cn/Get-Joy/filterProductsByStock/false">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/getjoy400green" alt="Get Joy" />
-            </a>
-        </div>
-
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/documents/d/shop/heavenly_hounds_iso_2026" target="_blank">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/heavenlyhounds400" alt="Heavenly Hounds" />
-            </a>
-        </div>
-
-        <div class="slide-item">
-            <a href="https://shop.independentpetsupply.com/documents/d/shop/wildridge_iso_2026" target="_blank">
-                <img src="https://shop.independentpetsupply.com/documents/d/shop/wildridge400" alt="Wildridge" />
-            </a>
-        </div>
+        <div class="slide-item"><a href="link1"><img src="https://shop.independentpetsupply.com/documents/d/shop/march400"></a></div>
+        <div class="slide-item"><a href="link2"><img src="https://shop.independentpetsupply.com/documents/d/shop/flea-tick400"></a></div>
+        <div class="slide-item"><a href="link3"><img src="https://shop.independentpetsupply.com/documents/d/shop/frommnutritionals"></a></div>
+        <div class="slide-item"><a href="link4"><img src="https://shop.independentpetsupply.com/documents/d/shop/what-sbarking400"></a></div>
+        <div class="slide-item"><a href="link5"><img src="https://shop.independentpetsupply.com/documents/d/shop/saintrocco-s400"></a></div>
+        <div class="slide-item"><a href="link6"><img src="https://shop.independentpetsupply.com/documents/d/shop/getjoy400green"></a></div>
+        <div class="slide-item"><a href="link7"><img src="https://shop.independentpetsupply.com/documents/d/shop/heavenlyhounds400"></a></div>
+        <div class="slide-item"><a href="link8"><img src="https://shop.independentpetsupply.com/documents/d/shop/wildridge400"></a></div>
     </div>
 
     <button class="nav-btn prev" onclick="changeSlide(-1)">&#10094;</button>
@@ -113,36 +65,60 @@
 </div>
 
 <script>
-    var slideIndex = 0;
-    var slides = document.querySelectorAll(".slide-item");
-    var track = document.getElementById("mainTrack");
-    var autoSlideTimeout;
+    const track = document.getElementById("mainTrack");
+    const slides = document.querySelectorAll(".slide-item");
+    
+    // 1. Clone the first and last slides
+    const firstClone = slides[0].cloneNode(true);
+    const lastClone = slides[slides.length - 1].cloneNode(true);
 
-    function updateSlider() {
-        // Move the track by the current index percentage
-        var offset = -slideIndex * 100;
-        track.style.transform = "translateX(" + offset + "%)";
-        
-        // Reset the timer whenever the slide changes (manual or auto)
-        clearTimeout(autoSlideTimeout);
-        autoSlideTimeout = setTimeout(autoCarousel, 5000);
+    // 2. Add them to the track
+    track.appendChild(firstClone);
+    track.insertBefore(lastClone, slides[0]);
+
+    // 3. Set starting position (offset by 1 because of the clone at the start)
+    let index = 1;
+    let isTransitioning = false;
+    track.style.transform = `translateX(-${index * 100}%)`;
+
+    function updateSlider(animate = true) {
+        if (animate) {
+            track.style.transition = "transform 0.6s ease-in-out";
+        } else {
+            track.style.transition = "none";
+        }
+        track.style.transform = `translateX(-${index * 100}%)`;
     }
 
     function changeSlide(n) {
-        slideIndex += n;
-        if (slideIndex >= slides.length) { slideIndex = 0; }
-        if (slideIndex < 0) { slideIndex = slides.length - 1; }
-        updateSlider();
+        if (isTransitioning) return; // Prevent clicking too fast
+        isTransitioning = true;
+        index += n;
+        updateSlider(true);
     }
 
-    function autoCarousel() {
-        slideIndex++;
-        if (slideIndex >= slides.length) { slideIndex = 0; }
-        updateSlider();
-    }
+    // This event listens for the end of the sliding animation
+    track.addEventListener('transitionend', () => {
+        isTransitioning = false;
+        
+        // If we are on the "fake" last slide, jump back to the real first one
+        if (index >= slides.length + 1) {
+            index = 1;
+            updateSlider(false);
+        }
+        // If we are on the "fake" first slide, jump to the real last one
+        if (index <= 0) {
+            index = slides.length;
+            updateSlider(false);
+        }
+    });
 
-    // Start the timer for the first time
-    autoSlideTimeout = setTimeout(autoCarousel, 5000);
+    // Auto-play
+    setInterval(() => {
+        if (!isTransitioning) {
+            changeSlide(1);
+        }
+    }, 5000);
 </script>
 
 </body>
