@@ -3,16 +3,16 @@
 <head>
     <base target="_parent">
     <style>
-        body { margin: 0; padding: 0; display: flex; justify-content: center; }
+        body { margin: 0; padding: 0; background: #fff; }
         
         .slider-viewport {
             position: relative;
             width: 100%;
-            max-width: 1920px;
-            height: 400px; /* Adjust height to match your images */
+            max-width: 1920px; /* New Max Width */
+            height: 400px;     /* New Height */
+            margin: 0 auto;
             overflow: hidden;
-            border-radius: 8px;
-            background: #fff;
+            background: #f4f4f4;
         }
 
         .slide-item {
@@ -23,43 +23,50 @@
             height: 100%;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
-            transform: translateX(10px); /* Slight offset for a "slide-in" feel */
+            transition: opacity 0.6s ease-in-out;
+            z-index: 1;
         }
 
-        /* The active slide is visible and centered */
         .slide-item.active {
             opacity: 1;
             visibility: visible;
-            transform: translateX(0);
             z-index: 2;
         }
 
         .slide-item img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ensures image isn't cropped */
+            object-fit: cover; /* Fills the 1920x400 space perfectly */
             display: block;
         }
 
-        /* Navigation */
+        /* Navigation Buttons - Hidden by default */
         .nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
-            padding: 15px;
+            padding: 20px 15px;
             cursor: pointer;
             z-index: 10;
-            font-size: 24px;
-            border-radius: 50%;
-            margin: 0 10px;
+            font-size: 30px;
+            transition: opacity 0.3s ease, background 0.3s ease;
+            opacity: 0; /* Hidden */
         }
 
-        .prev { left: 0; }
-        .next { right: 0; }
+        /* Show buttons when the mouse is anywhere over the slider */
+        .slider-viewport:hover .nav-btn {
+            opacity: 1;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .prev { left: 0; border-radius: 0 5px 5px 0; }
+        .next { right: 0; border-radius: 5px 0 0 5px; }
     </style>
 </head>
 <body>
@@ -83,26 +90,24 @@
     const slides = document.querySelectorAll('.slide-item');
 
     function changeSlide(direction) {
-        // Remove 'active' class from current slide
         slides[currentIndex].classList.remove('active');
-
-        // Calculate next index
         currentIndex = (currentIndex + direction + slides.length) % slides.length;
-
-        // Add 'active' class to new slide
         slides[currentIndex].classList.add('active');
     }
 
-    // Auto-play
+    // Auto-advance
     let autoPlay = setInterval(() => changeSlide(1), 5000);
 
-    // Reset timer on manual click
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            clearInterval(autoPlay);
-            autoPlay = setInterval(() => changeSlide(1), 5000);
-        });
-    });
+    // Reset timer when a button is clicked
+    function handleManualNav(direction) {
+        clearInterval(autoPlay);
+        changeSlide(direction);
+        autoPlay = setInterval(() => changeSlide(1), 5000);
+    }
+
+    // Connect buttons to the reset-timer function
+    document.querySelector('.prev').onclick = () => handleManualNav(-1);
+    document.querySelector('.next').onclick = () => handleManualNav(1);
 </script>
 
 </body>
